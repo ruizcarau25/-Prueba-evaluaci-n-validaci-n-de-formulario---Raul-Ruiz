@@ -1,0 +1,131 @@
+<main class="container py-4">
+  <header class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+    <div><strong class="text-primary">Nuba</strong> <span class="text-secondary">Veterinaria</span></div>
+    <span class="small text-secondary">Registro de paciente</span>
+  </header>
+
+  <h1 class="h2">Registro de mascota</h1>
+  <p class="text-secondary mb-4">Completa los datos para preparar la primera visita.</p>
+
+  @if (submitted) {
+    <div class="alert alert-success" role="status">Registro completado. ¡Os esperamos en Nuba!</div>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="register()" class="row g-3" novalidate>
+    <fieldset class="col-12 border-0 p-0" formGroupName="owner">
+      <legend class="h5">Datos de contacto</legend>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label for="owner-name" class="form-label">Nombre <span class="text-danger">*</span></label>
+          <input id="owner-name" type="text" formControlName="name" autocomplete="given-name" class="form-control" [class.is-invalid]="shouldShowError('owner.name')" aria-describedby="owner-name-error" />
+          @if (errorMessages('owner.name').length) { <div id="owner-name-error" class="invalid-feedback d-block">@for (error of errorMessages('owner.name'); track error) { <div>{{ error }}</div> }</div> }
+        </div>
+        <div class="col-md-6">
+          <label for="owner-surname" class="form-label">Apellidos <span class="text-danger">*</span></label>
+          <input id="owner-surname" type="text" formControlName="surname" autocomplete="family-name" class="form-control" [class.is-invalid]="shouldShowError('owner.surname')" aria-describedby="owner-surname-error" />
+          @if (errorMessages('owner.surname').length) { <div id="owner-surname-error" class="invalid-feedback d-block">@for (error of errorMessages('owner.surname'); track error) { <div>{{ error }}</div> }</div> }
+        </div>
+        <div class="col-md-6">
+          <label for="owner-phone" class="form-label">Teléfono <span class="text-danger">*</span></label>
+          <input id="owner-phone" type="tel" formControlName="phone" autocomplete="tel" placeholder="600000000 o +34600000000" class="form-control" [class.is-invalid]="shouldShowError('owner.phone')" aria-describedby="owner-phone-error" />
+          @if (errorMessages('owner.phone').length) { <div id="owner-phone-error" class="invalid-feedback d-block">@for (error of errorMessages('owner.phone'); track error) { <div>{{ error }}</div> }</div> }
+        </div>
+        <div class="col-md-6">
+          <label for="owner-email" class="form-label">Email <span class="text-danger">*</span></label>
+          <input id="owner-email" type="email" formControlName="email" autocomplete="email" class="form-control" [class.is-invalid]="shouldShowError('owner.email')" aria-describedby="owner-email-error" />
+          @if (errorMessages('owner.email').length) { <div id="owner-email-error" class="invalid-feedback d-block">@for (error of errorMessages('owner.email'); track error) { <div>{{ error }}</div> }</div> }
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="col-12 border-0 border-top pt-3 px-0" formGroupName="pet">
+      <legend class="h5">Datos de la mascota</legend>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label for="pet-name" class="form-label">Nombre de la mascota <span class="text-danger">*</span></label>
+          <input id="pet-name" type="text" formControlName="name" class="form-control" [class.is-invalid]="shouldShowError('pet.name')" aria-describedby="pet-name-error" />
+          @if (errorMessages('pet.name').length) { <div id="pet-name-error" class="invalid-feedback d-block">@for (error of errorMessages('pet.name'); track error) { <div>{{ error }}</div> }</div> }
+        </div>
+        <div class="col-md-6">
+          <label for="pet-species" class="form-label">Especie <span class="text-danger">*</span></label>
+          <select id="pet-species" formControlName="species" class="form-select" [class.is-invalid]="shouldShowError('pet.species')" aria-describedby="pet-species-error">
+            <option value="" disabled>Selecciona una especie</option>
+            @for (animal of species; track animal) { <option [value]="animal">{{ animal }}</option> }
+          </select>
+          @if (errorMessages('pet.species').length) { <div id="pet-species-error" class="invalid-feedback d-block">@for (error of errorMessages('pet.species'); track error) { <div>{{ error }}</div> }</div> }
+        </div>
+        <fieldset class="col-md-6 border-0 p-0">
+          <legend class="form-label">Sexo <span class="text-danger">*</span></legend>
+          <div class="form-check form-check-inline">
+            <input id="sex-male" type="radio" formControlName="sex" value="Macho" class="form-check-input" [class.is-invalid]="shouldShowError('pet.sex')" />
+            <label for="sex-male" class="form-check-label">Macho</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input id="sex-female" type="radio" formControlName="sex" value="Hembra" class="form-check-input" [class.is-invalid]="shouldShowError('pet.sex')" />
+            <label for="sex-female" class="form-check-label">Hembra</label>
+          </div>
+          @if (errorMessages('pet.sex').length) { <div class="invalid-feedback d-block">@for (error of errorMessages('pet.sex'); track error) { <div>{{ error }}</div> }</div> }
+        </fieldset>
+        <div class="col-md-6">
+          <label for="pet-breed" class="form-label">Raza <span class="text-secondary">(opcional)</span></label>
+          <input id="pet-breed" type="text" formControlName="breed" class="form-control" [class.is-invalid]="shouldShowError('pet.breed')" aria-describedby="pet-breed-error" />
+          @if (errorMessages('pet.breed').length) { <div id="pet-breed-error" class="invalid-feedback d-block">@for (error of errorMessages('pet.breed'); track error) { <div>{{ error }}</div> }</div> }
+        </div>
+        <div class="col-md-6">
+          <label for="pet-age" class="form-label">Edad en años <span class="text-danger">*</span></label>
+          <input id="pet-age" type="number" min="0" max="30" step="1" formControlName="age" class="form-control" [class.is-invalid]="shouldShowError('pet.age')" aria-describedby="pet-age-error" />
+          @if (errorMessages('pet.age').length) { <div id="pet-age-error" class="invalid-feedback d-block">@for (error of errorMessages('pet.age'); track error) { <div>{{ error }}</div> }</div> }
+        </div>
+        <div class="col-md-6">
+          <label for="pet-weight" class="form-label">Peso en kg <span class="text-danger">*</span></label>
+          <input id="pet-weight" type="number" min="0.1" max="90" step="0.1" formControlName="weight" class="form-control" [class.is-invalid]="shouldShowError('pet.weight')" aria-describedby="pet-weight-error" />
+          @if (errorMessages('pet.weight').length) { <div id="pet-weight-error" class="invalid-feedback d-block">@for (error of errorMessages('pet.weight'); track error) { <div>{{ error }}</div> }</div> }
+        </div>
+        <div class="col-md-6">
+          <label for="pet-microchip" class="form-label">Número de microchip <span class="text-danger">*</span></label>
+          <input id="pet-microchip" type="text" inputmode="numeric" maxlength="15" formControlName="microchip" class="form-control" [class.is-invalid]="shouldShowError('pet.microchip')" aria-describedby="pet-microchip-error" />
+          @if (errorMessages('pet.microchip').length) { <div id="pet-microchip-error" class="invalid-feedback d-block">@for (error of errorMessages('pet.microchip'); track error) { <div>{{ error }}</div> }</div> }
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="col-12 border-top pt-3 px-0" formGroupName="account">
+      <legend class="h5">Cuenta y primera visita</legend>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label for="account-password" class="form-label">Contraseña <span class="text-danger">*</span></label>
+          <input id="account-password" type="password" autocomplete="new-password" formControlName="password" class="form-control" [class.is-invalid]="shouldShowError('account.password')" aria-describedby="password-error" />
+          @if (errorMessages('account.password').length) { <div id="password-error" class="invalid-feedback d-block">@for (error of errorMessages('account.password'); track error) { <div>{{ error }}</div> }</div> }
+        </div>
+      </div>
+    </fieldset>
+
+    <div class="col-12" formGroupName="visit">
+      <div class="row g-3">
+        <div class="col-12">
+          <label for="visit-reason" class="form-label">Motivo de la primera visita <span class="text-danger">*</span></label>
+          <textarea id="visit-reason" rows="4" maxlength="300" formControlName="reason" class="form-control" [class.is-invalid]="shouldShowError('visit.reason')" aria-describedby="visit-reason-error"></textarea>
+          @if (errorMessages('visit.reason').length) { <div id="visit-reason-error" class="invalid-feedback d-block">@for (error of errorMessages('visit.reason'); track error) { <div>{{ error }}</div> }</div> }
+        </div>
+        <div class="col-12">
+          <div class="form-check">
+            <input id="privacy" type="checkbox" formControlName="privacy" class="form-check-input" [class.is-invalid]="shouldShowError('visit.privacy')" />
+            <label for="privacy" class="form-check-label">Acepto la política de privacidad <span class="text-danger">*</span></label>
+            @if (errorMessages('visit.privacy').length) { <div class="invalid-feedback d-block">@for (error of errorMessages('visit.privacy'); track error) { <div>{{ error }}</div> }</div> }
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="form-check">
+            <input id="vaccine-reminders" type="checkbox" formControlName="vaccineReminders" class="form-check-input" />
+            <label for="vaccine-reminders" class="form-check-label">Quiero recibir recordatorios de vacunas por email</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 d-flex justify-content-between align-items-center border-top pt-3">
+      <span class="small text-secondary">Los campos con * son obligatorios</span>
+      <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Registrar</button>
+    </div>
+  </form>
+</main>
